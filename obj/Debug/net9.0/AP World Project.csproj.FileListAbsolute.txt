@@ -1,0 +1,14 @@
+W:\AP World Project\AP World Project\bin\Debug\net9.0\AP World Project.exe
+W:\AP World Project\AP World Project\bin\Debug\net9.0\AP World Project.deps.json
+W:\AP World Project\AP World Project\bin\Debug\net9.0\AP World Project.runtimeconfig.json
+W:\AP World Project\AP World Project\bin\Debug\net9.0\AP World Project.dll
+W:\AP World Project\AP World Project\bin\Debug\net9.0\AP World Project.pdb
+W:\AP World Project\AP World Project\obj\Debug\net9.0\AP World Project.GeneratedMSBuildEditorConfig.editorconfig
+W:\AP World Project\AP World Project\obj\Debug\net9.0\AP World Project.AssemblyInfoInputs.cache
+W:\AP World Project\AP World Project\obj\Debug\net9.0\AP World Project.AssemblyInfo.cs
+W:\AP World Project\AP World Project\obj\Debug\net9.0\AP World Project.csproj.CoreCompileInputs.cache
+W:\AP World Project\AP World Project\obj\Debug\net9.0\AP World Project.dll
+W:\AP World Project\AP World Project\obj\Debug\net9.0\refint\AP World Project.dll
+W:\AP World Project\AP World Project\obj\Debug\net9.0\AP World Project.pdb
+W:\AP World Project\AP World Project\obj\Debug\net9.0\AP World Project.genruntimeconfig.cache
+W:\AP World Project\AP World Project\obj\Debug\net9.0\ref\AP World Project.dll
