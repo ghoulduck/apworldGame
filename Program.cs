@@ -116,20 +116,21 @@ public class Program {
             var answerSet = new string[4];
             var topic = _infoCorr.Keys.ToArray()[questionIndex];
             var correctAnswer = _infoCorr[topic];
-            answerSet[Random.Shared.Next(0, 5)] = correctAnswer;
+            answerSet[Random.Shared.Next(0, 4)] = correctAnswer;
+            var upper = 5;
+            var lower = 0;
             
-            for (int i = 0; i < 4; i++) {
-                MyLabel:
+            for (int i = 0; i < 4;) {
                 var current = _infoCorr.Values.ToArray()[Random.Shared.Next(0, _infoCorr.Values.Count)];
                 
                 if (!answerSet.Contains(current) && answerSet[i] == null) {
-                    goto MyLabel;
+                    answerSet[i] = current;
+                    i++;
                 }
 
-                answerSet[i] = current;
             }
 
-            // int n = answerSet.Length;
+            int n = answerSet.Length;
             // while (n > 1) {
             //     n--;
             //     int k = Random.Shared.Next(n + 1);
