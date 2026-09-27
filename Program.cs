@@ -10,7 +10,7 @@ public class Program {
 
     public static void Main() {
         var program = new Program();
-        program.Populate();
+        program.Populate(true);
 
         while (true) {
             program.MainMenu();
@@ -96,6 +96,31 @@ public class Program {
             //     tempInfo[i] = 
             // }
             
+        } catch (Exception e) {
+            Console.WriteLine($"Exception: {e}");
+        }
+    }
+    // AI Implementation
+    private void Populate(bool check) {
+        try {
+            var sr = new StreamReader("TopicMappings.csv");
+            var line = sr.ReadLine();
+        
+            while (line != null) {
+                var tempInfo = line.Split(new char[] {','}, 3);
+            
+                if (tempInfo.Length == 3) {
+                    var topic = tempInfo[0].Trim();
+                    var category = tempInfo[1].Trim();
+                    var definition = tempInfo[2].Trim();
+                
+                    _infoCorr.Add(new Topic(topic, category), definition);
+                }
+            
+                line = sr.ReadLine();
+            }
+        
+            sr.Close();
         } catch (Exception e) {
             Console.WriteLine($"Exception: {e}");
         }
