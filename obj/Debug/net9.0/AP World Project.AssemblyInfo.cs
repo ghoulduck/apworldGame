@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AP World Project")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4736a8a489a1ca4bc3cdf3c6cdf36e45cbe1f0e7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+99a70b6db5b3bc4d1b18dc6bab946727fafe652b")]
 [assembly: System.Reflection.AssemblyProductAttribute("AP World Project")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AP World Project")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

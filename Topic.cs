@@ -1,6 +1,15 @@
 ﻿namespace AP_World_Project;
 
-struct Topic(string topic, string pirates) {
+public class Topic {
+    
+    private readonly string topic;
+    private readonly string pirates;
+
+    public Topic(string topic, string pirates) {
+        this.topic = topic;
+        this.pirates = pirates;
+    }
+    
     public string GetTopic() {
         return topic;
     }

@@ -1,132 +1,84 @@
-﻿
-using AP_World_Project;
+﻿namespace AP_World_Project;
 
 public class Program {
-    private static Dictionary<Topic, string>? _infoCorr;
+    private static Dictionary<Topic, string> _infoCorr = new();
 
-    public Program() {
-        _infoCorr = new Dictionary<Topic, string>();
-    }
+    private static Dictionary<string, string> _pirates = new Dictionary<string, string>() {
+        ["p"] = "Political", ["i"] = "Intellectual", ["r"] = "Religious", ["a"] = "Artistic", ["t"] = "Technological"
+        , ["e"] = "Economic", ["s"] = "Social"
+    };
 
     public static void Main() {
         var program = new Program();
-        program.Populate(true);
+        program.Populate(@"W:\AP World Project\AP World Project\TopicMappings.csv");
 
         while (true) {
             program.MainMenu();
 
             var input = Console.ReadLine();
-            
-            switch (input.ToLower())
-            {
+
+            switch (input.ToLower()) {
                 case "1":
                     program.Quiz();
-                    Console.WriteLine("quiz");
                     break;
                 case "2":
-                    //Flashcards()
-                    Console.WriteLine("flashcards");
+                    Flashcards();
                     break;
                 case "quit":
                     return;
+                case "dev":
+                    DisplayDevConsole("brandy2010");
+                    break;
+                default:
+                    continue;
             }
         }
     }
-    
-    
+
+
     private void Populate() {
         try {
             var sr = new StreamReader("W:\\AP World Project\\AP World Project\\TopicMappings.csv");
-            var temp = "";
-            var lines = 0;
-            var line = sr.ReadLine();
-            while (line != null) {
-                lines++;
-                
-                temp += line;
+            string? line;
+            do {
                 line = sr.ReadLine();
-            }
+                var tempInfo = line.Split(",", 3);
+
+                _infoCorr.Add(new Topic(tempInfo[0].Trim('\"', ','), tempInfo[1].Substring(2, 1))
+                    , tempInfo[2].Trim('\"', ','));
+            } while (line != null);
 
             sr.Close();
 
-            var tempInfo = temp.Split(",");
-            
-            for (int i = 0; i < tempInfo.Length; i += 3) {
-                _infoCorr.Add(new Topic(tempInfo[i], tempInfo[i + 1]), tempInfo[i + 2]);
-            }
 
-            // var tempInfo = new string[lines][];
-            // for (int i = 0; i < tempInfo.Length; i++) {
-            //     tempInfo[i] = new string[3];
-            //     for (int g = 0; g < 3; g++) {
-            //         
-            //     }
-            // }
-            
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Console.WriteLine($"Exception: {e}");
         }
     }
     
-    // Possible implementation for custom question sets
-    public void Populate(string filepath) {
+    private void Populate(string filepath) {
         try {
             var sr = new StreamReader(filepath);
-            var temp = "";
-            var lines = 0;
-
-            var line = sr.ReadLine();
-            while (line != null) {
-                lines++;
-                Console.WriteLine(line);
-                temp += line;
+            string? line;
+            do {
                 line = sr.ReadLine();
-            }
+                var tempInfo = line.Split(",", 3);
+
+                _infoCorr.Add(new Topic(tempInfo[0].Trim('\"', ','), tempInfo[1].Substring(2, 1))
+                    , tempInfo[2].Trim('\"', ','));
+            } while (line != null);
 
             sr.Close();
 
-            var tempInfo = temp.Split(',');
-            
-            for (int i = 0; i < tempInfo.Length; i += 3) {
-                _infoCorr.Add(new Topic(tempInfo[i], tempInfo[i + 1]), tempInfo[i + 2]);
-            }
 
-            // var tempInfo = new string[lines][];
-            // for (int i = 0; i < tempInfo.Length; i++) {
-            //     tempInfo[i] = 
-            // }
-            
-        } catch (Exception e) {
-            Console.WriteLine($"Exception: {e}");
         }
-    }
-    // AI Implementation
-    private void Populate(bool check) {
-        try {
-            var sr = new StreamReader("TopicMappings.csv");
-            var line = sr.ReadLine();
-        
-            while (line != null) {
-                var tempInfo = line.Split(new char[] {','}, 3);
-            
-                if (tempInfo.Length == 3) {
-                    var topic = tempInfo[0].Trim();
-                    var category = tempInfo[1].Trim();
-                    var definition = tempInfo[2].Trim();
-                
-                    _infoCorr.Add(new Topic(topic, category), definition);
-                }
-            
-                line = sr.ReadLine();
-            }
-        
-            sr.Close();
-        } catch (Exception e) {
+        catch (Exception e) {
             Console.WriteLine($"Exception: {e}");
         }
     }
 
-    public void MainMenu() {
+    private void MainMenu() {
         Console.Clear();
         Console.WriteLine("""
                           1. Quiz
@@ -135,55 +87,257 @@ public class Program {
                           """);
     }
 
-    public void Quiz() {
+    private void Quiz() {
         Console.Clear();
-        Console.WriteLine("Welcome to the Quiz Portion of WorldLet! \nYou will be given different terms, and you will have to pick which of the four answers below. Type quit to leave:");
+        Console.WriteLine(
+            "Welcome to the Quiz Portion of WorldLet! \nYou will be given different terms, and you will have to pick which of the four answers below. Type quit to leave:");
 
         var streak = 0;
         var score = 0;
         var questionIndex = 0;
+        var scoreAmount = 100;
+        var incorrect = new Dictionary<Topic, string>();
 
-            
+
+
         while (true) {
-            var answerSet = new string[4];
-            var topic = _infoCorr.Keys.ToArray()[questionIndex];
-            var correctAnswer = _infoCorr[topic];
-            answerSet[Random.Shared.Next(0, 4)] = correctAnswer;
-            var upper = 5;
-            var lower = 0;
-            
-            for (int i = 0; i < 4;) {
-                var current = _infoCorr.Values.ToArray()[Random.Shared.Next(0, _infoCorr.Values.Count)];
-                
-                if (!answerSet.Contains(current) && answerSet[i] == null) {
-                    answerSet[i] = current;
-                    i++;
-                }
+            if (questionIndex >= _infoCorr.Keys.ToArray().Length) {
+                Console.WriteLine($"You finished all the questions! Would you like to:" +
+                                  $"\n1. Go over the ones you missed" +
+                                  $"\n2. Return to the main menu");
+                var input = Console.ReadLine();
 
+                switch (input) {
+                    case "1":
+                        DisplayDictionary(incorrect);
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadKey(true);
+                        return;
+                    case "2":
+                        return;
+                }
             }
 
-            int n = answerSet.Length;
-            // while (n > 1) {
-            //     n--;
-            //     int k = Random.Shared.Next(n + 1);
-            //     
-            //     // var value = answerSet[k];
-            //     // answerSet[k] = answerSet[n];
-            //     // answerSet[n] = value;
-            //
-            //     (answerSet[k], answerSet[n]) = (answerSet[n], answerSet[k]);
-            // }
+            string[] answerSet = ["", "", "", ""];
+            var topicObj = _infoCorr.Keys.ToArray()[questionIndex];
+            var topic = topicObj.GetTopic();
+            var pirates = topicObj.GetPirates();
+            var correctAnswer = _infoCorr[topicObj];
+            answerSet[Random.Shared.Next(0, 4)] = correctAnswer;
 
-            Console.WriteLine($"What is {topic}");
-            
+            for (int i = 0; i < answerSet.Length; i++) {
+
+                if (answerSet[i].Equals("")) {
+                    var answerAttempt = _infoCorr.Values.ToArray()[Random.Shared.Next(0, _infoCorr.Values.Count)];
+
+                    while (true) {
+                        if (answerSet.Contains(answerAttempt)) {
+                            answerAttempt = _infoCorr.Values.ToArray()[Random.Shared.Next(0, _infoCorr.Values.Count)];
+                        }
+                        else {
+                            answerSet[i] = answerAttempt;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            Console.Clear();
+            Console.WriteLine(
+                "Welcome to the Quiz Portion of WorldLet! \nYou will be given different terms, and you will have to pick which of the four answers below. Type quit to leave:");
+            Console.WriteLine($"What is {topic}: {_pirates[pirates]}");
             Console.WriteLine($"A: {answerSet[0]}\nB: {answerSet[1]}\nC: {answerSet[2]}\nD: {answerSet[3]}");
-            Console.ReadLine();
+
+
+            var a = answerSet[0].Equals(correctAnswer);
+            var b = answerSet[1].Equals(correctAnswer);
+            var c = answerSet[2].Equals(correctAnswer);
+            var d = answerSet[3].Equals(correctAnswer);
+
+
+            var answer = Console.ReadLine();
+
+            switch (answer.ToLower()) {
+                case "a":
+                    if (a) {
+                        streak++;
+                        score += scoreAmount * streak;
+                        Console.WriteLine("You got the question right!");
+                    }
+                    else {
+                        streak = 0;
+                        Console.WriteLine($"The correct answer was {correctAnswer}");
+                        incorrect.Add(new Topic(topic, pirates), correctAnswer);
+                    }
+
+                    PrintScoreStreak(score, streak);
+
+                    break;
+
+                case "b":
+                    if (b) {
+                        streak++;
+                        score += scoreAmount * streak;
+                        Console.WriteLine("You got it!");
+                    }
+                    else {
+                        streak = 0;
+                        Console.WriteLine($"The correct answer was {correctAnswer}");
+                        incorrect.Add(new Topic(topic, pirates), correctAnswer);
+                    }
+
+                    PrintScoreStreak(score, streak);
+
+                    break;
+
+                case "c":
+                    if (c) {
+                        streak++;
+                        score += scoreAmount * streak;
+                        Console.WriteLine("Good for you! You got it!");
+                    }
+                    else {
+                        streak = 0;
+                        Console.WriteLine($"The correct answer was {correctAnswer}");
+                        incorrect.Add(new Topic(topic, pirates), correctAnswer);
+                    }
+
+                    PrintScoreStreak(score, streak);
+
+                    break;
+
+                case "d":
+                    if (d) {
+                        streak++;
+                        score += scoreAmount * streak;
+                        Console.WriteLine("You got the question!");
+                    }
+                    else {
+                        streak = 0;
+                        Console.WriteLine($"The correct answer was {correctAnswer}");
+                        incorrect.Add(new Topic(topic, pirates), correctAnswer);
+                    }
+
+                    PrintScoreStreak(score, streak);
+
+                    break;
+
+                case "quit":
+                    return;
+            }
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey(true);
 
             questionIndex++;
         }
     }
 
-    public void Flashcards() {
-        
+    private static void Flashcards() {
+        Console.Clear();
+        Console.WriteLine("Under construction");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey(true);
+    }
+
+    private static void PrintScoreStreak(int score, int streak) {
+        Console.WriteLine($"Score: {score}\n" +
+                          $"Streak: {streak}");
+    }
+
+    private static void DisplayDictionary(Dictionary<Topic, string> dict) {
+        for (int i = 0; i < dict.Keys.Count; i++) {
+            var key = dict.Keys.ToArray()[i];
+            var value = dict[key];
+
+            Console.WriteLine($"{key.GetTopic()} is {value}");
+        }
+    }
+
+    private static void DisplayDevConsole(string password) {
+        Console.Clear();
+        string? input = null;
+
+        while (true) {
+            var key = Console.ReadKey(true);
+            if (key.Key == ConsoleKey.Enter) {
+                break;
+            }
+
+            input += key.KeyChar;
+        }
+
+        if (input.Equals(password)) {
+            while (true) {
+                Console.WriteLine("Dev Console:\n" +
+                                  "1. Display All Questions\n" +
+                                  "2. Display Question Analytics (sorted by category)");
+
+                var key = Console.ReadKey(true).Key;
+
+                switch (key) {
+                    case ConsoleKey.D1:
+                        Console.Clear();
+                        foreach (var pair in _infoCorr) {
+                            var topic = pair.Key.GetTopic();
+                            var type = _pirates[pair.Key.GetPirates()];
+                            var explanation = pair.Value;
+                            Console.WriteLine($"Topic: {topic}\n" +
+                                              $"Type (Pirates): {type}\n" +
+                                              $"Explanation: {explanation}");
+                            Console.WriteLine();
+                        }
+
+                        break;
+                    
+                    case ConsoleKey.D2:
+                        var count = new int[_pirates.Count];
+
+                        foreach (var pair in _infoCorr) {
+                            var type = pair.Key.GetPirates();
+
+                            switch (type) {
+                                case "p":
+                                    count[0]++;
+                                    break;
+                                case "i":
+                                    count[1]++;
+                                    break;
+                                case "r":
+                                    count[2]++;
+                                    break;
+                                case "a":
+                                    count[3]++;
+                                    break;
+                                case "t":
+                                    count[4]++;
+                                    break;
+                                case "e":
+                                    count[5]++;
+                                    break;
+                                case "s":
+                                    count[6]++;
+                                    break;
+                                    
+                                    
+                            }
+                            
+                            
+                        }
+
+                        for (int i = 0; i < _pirates.Values.Count; i++) {
+                            Console.WriteLine($"{_pirates.Values.ToArray()[i]} | {count[i]}");
+                        }
+
+                        break;
+                    
+                    default:
+                        return;
+                }
+
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey(true);
+            }
+        }
     }
 }
