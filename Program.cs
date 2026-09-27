@@ -73,9 +73,11 @@ public class Program {
         try {
             var sr = new StreamReader(filepath);
             var temp = "";
+            var lines = 0;
 
             var line = sr.ReadLine();
             while (line != null) {
+                lines++;
                 Console.WriteLine(line);
                 temp += line;
                 line = sr.ReadLine();
@@ -83,11 +85,16 @@ public class Program {
 
             sr.Close();
 
-            var tempInfo = temp.Split(",");
-
+            var tempInfo = temp.Split(',');
+            
             for (int i = 0; i < tempInfo.Length; i += 3) {
                 _infoCorr.Add(new Topic(tempInfo[i], tempInfo[i + 1]), tempInfo[i + 2]);
             }
+
+            // var tempInfo = new string[lines][];
+            // for (int i = 0; i < tempInfo.Length; i++) {
+            //     tempInfo[i] = 
+            // }
             
         } catch (Exception e) {
             Console.WriteLine($"Exception: {e}");
