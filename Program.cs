@@ -10,7 +10,7 @@ public class Program {
 
     public static void Main() {
         var program = new Program();
-        program.Populate(@"W:\AP World Project\AP World Project\TopicMappings.csv");
+        program.Populate(@"C:\Users\jvcer\Downloads\apworldGame\TopicMappings.csv");
 
         while (true) {
             program.MainMenu();

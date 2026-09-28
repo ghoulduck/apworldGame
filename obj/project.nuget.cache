@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "er+d12rc0bc=",
+  "dgSpecHash": "dEZ72b92n5w=",
   "success": true,
-  "projectFilePath": "W:\\AP World Project\\AP World Project\\AP World Project.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\jvcer\\Downloads\\apworldGame\\AP World Project.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jvcer\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.19\\microsoft.netcore.app.ref.9.0.19.nupkg.sha512",
+    "C:\\Users\\jvcer\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.19\\microsoft.windowsdesktop.app.ref.9.0.19.nupkg.sha512",
+    "C:\\Users\\jvcer\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.19\\microsoft.aspnetcore.app.ref.9.0.19.nupkg.sha512",
+    "C:\\Users\\jvcer\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\9.0.19\\microsoft.netcore.app.host.win-x64.9.0.19.nupkg.sha512"
+  ],
   "logs": []
 }
